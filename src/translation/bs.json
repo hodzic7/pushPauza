@@ -1,7 +1,14 @@
 {
   "title": "Preostalo vrijeme:",
-  "start30": "30 minuta",
-  "start45": "45 minuta",
+  "start30": "30 min",
+  "start45": "45 min",
   "start60": "1 sat",
-  "lang": "Jezik"
+  "lang": "Jezik",
+  "pause": "pauziraj",
+  "reset": "resetuj",
+  "timeUp": "Vrijeme je isteklo!",
+  "popupMessage1": "Tajna napredovanja je početak. - Mark Twain",
+  "popupMessage2": "Naša najveća slabost leži u odustajanju. Najsigurniji način da uspijemo uvijek je pokušati samo još jednom. - Thomas Edison",
+  "popupMessage3": "Pucaj na mjesec. Čak i ako promašiš, sletjet ćeš među zvijezde. - Les Brown",
+  "popupMessage4": "Učenje nikada ne iscrpljuje um. - Leonardo da Vinci"
 }
