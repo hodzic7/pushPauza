@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MessageCircleHeart, Cigarette, Book, Coffee } from 'lucide-react';  
+import { MessageCircleHeart, Cigarette, Book, Coffee, PauseCircle, RefreshCcw } from 'lucide-react';  
 import '../style/Timer.css';
 import Header from './Header';
 
@@ -20,6 +20,7 @@ export default function Timer() {
     t('popupMessage4')
   ];
 
+  // Start the timer
   const startTimer = (minutes) => {
     const seconds = minutes * 60;
     setTimeLeft(seconds);
@@ -28,10 +29,12 @@ export default function Timer() {
     setSelectedDuration(minutes);
   };
 
+  // Toggle the timer on or off
   const toggleTimer = () => {
     setRunning(!running);
   };
 
+  // Reset the timer
   const resetTimer = () => {
     setRunning(false);
     setTimeLeft(0);
@@ -39,12 +42,14 @@ export default function Timer() {
     setSelectedDuration(null);
   };
 
+  // Format the time for display
   const formatTime = (secs) => {
     const m = Math.floor(secs / 60);
     const s = secs % 60;
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
+  // Calculate progress
   const getProgress = () => {
     if (initialTime === 0) return 0;
     return ((initialTime - timeLeft) / initialTime) * 100;
@@ -61,6 +66,21 @@ export default function Timer() {
     setCurrentMessageIndex((prevIndex) => (prevIndex + 1) % messages.length); 
     setShowPopup(true);
   };
+
+  // Effect to manage the interval for the timer
+  useEffect(() => {
+    let interval = null;
+
+    if (running && timeLeft > 0) {
+      interval = setInterval(() => {
+        setTimeLeft((prevTime) => prevTime - 1);
+      }, 1000);
+    } else if (!running || timeLeft <= 0) {
+      clearInterval(interval); // Clear interval when timer is paused or finished
+    }
+
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, [running, timeLeft]);
 
   return (
     <>
@@ -114,10 +134,21 @@ export default function Timer() {
           ) : (
             <div className="timer-controls">
               <button onClick={toggleTimer} className={`control-btn ${running ? 'pause' : 'play'}`}>
-                {running ? t('pause') : t('resume')}
+                {running ? (
+                  <>
+                    <PauseCircle size={24} />
+                    <span>{t('pause')}</span>
+                  </>
+                ) : (
+                  <>
+                    <RefreshCcw size={24} />
+                    <span>{t('resume')}</span>
+                  </>
+                )}
               </button>
               <button onClick={resetTimer} className="control-btn reset">
-                {t('reset')}
+                <RefreshCcw size={24} />
+                <span>{t('reset')}</span>
               </button>
             </div>
           )}
